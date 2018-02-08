@@ -1,4 +1,4 @@
-from .magpie.magpie.main import Magpie
+from stella.magpie.magpie.main import Magpie
 import os
 
 class stella:
