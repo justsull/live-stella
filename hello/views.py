@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 import requests
 from .models import Greeting
-from .stella import stella
+from stella.stella import stella
 
 # Create your views here.
 def index(request):
@@ -16,7 +16,7 @@ def predict(request):
     # percent = request.GET.get('percent', .03)
     stel = stella()
     tags = stel.predict(text,.03)
-    print("Pure Belgium")
+    print("Stella")
     return HttpResponse(tags)
 
 def db(request):
