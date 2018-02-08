@@ -1,5 +1,9 @@
-from magpie.magpie.main import Magpie
+from stella.magpie.magpie.main import Magpie
 import os
+import sys
+
+for p in sys.path:
+    print(p)
 
 class stella:
 
