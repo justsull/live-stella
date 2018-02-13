@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.http import JsonResponse
 import requests
 from .models import Greeting
-from stella.stella import stella
+from .stella.stella import stella
 
 # Create your views here.
 def index(request):
@@ -14,10 +15,10 @@ def index(request):
 def predict(request):
     text = request.GET.get('text', '')
     # percent = request.GET.get('percent', .03)
-    stel = stella()
-    tags = stel.predict(text,.03)
+    stell = stella()
+    data = stell.predict(text,.03) 
     print("Stella")
-    return HttpResponse(tags)
+    return HttpResponse(data, content_type='application/json')
 
 def db(request):
 

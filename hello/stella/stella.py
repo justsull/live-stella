@@ -1,12 +1,24 @@
-from .magpie.magpie.main import Magpie
+from hello.stella.magpie.magpie.main import Magpie
 import os
 import sys
+import json
+import numpy
+import math
 
-for p in sys.path:
-    print(p)
+
+class MyEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, numpy.integer):
+            return int(obj)
+        elif isinstance(obj, numpy.floating):
+            return float(obj)
+        elif isinstance(obj, numpy.ndarray):
+            return obj.tolist()
+        else:
+            return super(MyEncoder, self).default(obj)
+
 
 class stella:
-
     def __init__(self):
         self.model = None
         
@@ -31,5 +43,7 @@ class stella:
 
     def predict(self, text, percent):
         l = self.model.predict_from_text(text)
-        results = [i for i in l if  i[1] > percent]
+        prediction = [i[0] for i in l if  i[1] > percent]
+        results = json.dumps({'prediction':prediction}, cls=MyEncoder)
         return results
+
