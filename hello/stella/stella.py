@@ -1,4 +1,4 @@
-from .magpie.magpie.main import Magpie
+from magpie import Magpie
 import os
 import sys
 import json
