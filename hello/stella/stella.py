@@ -1,4 +1,4 @@
-from hello.stella.magpie.magpie.main import Magpie
+from .magpie.magpie.main import Magpie
 import os
 import sys
 import json
