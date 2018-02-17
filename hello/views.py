@@ -16,7 +16,7 @@ def predict(request):
     text = request.GET.get('text', '')
     # percent = request.GET.get('percent', .03)
     stell = stella()
-    data = stell.predict(text,.01) 
+    data = stell.predict(text,.000001) 
     print("Stella")
     return HttpResponse(data, content_type='application/json')
 
