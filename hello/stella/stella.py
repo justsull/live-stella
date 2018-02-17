@@ -24,9 +24,9 @@ class stella:
         
         dir = os.path.dirname(__file__)
         self.lab_path = os.path.join(dir,'tensor/general.labels')
-        self.keras_path = os.path.join(dir,'tensor/models/gen_models.h5')
-        self.word2vec_path = os.path.join(dir,'tensor/models/gen_embedding')
-        self.scaler_path = os.path.join(dir,'tensor/models/gen_scaler')
+        self.keras_path = os.path.join(dir,'tensor/models/new_models.h5')
+        self.word2vec_path = os.path.join(dir,'tensor/models/new_embedding')
+        self.scaler_path = os.path.join(dir,'tensor/models/new_scaler')
         
         self.set_model()
 
