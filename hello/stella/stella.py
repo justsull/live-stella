@@ -45,6 +45,6 @@ class stella:
         l = self.model.predict_from_text(text)
         prediction = [i[0] for i in l if  i[1] > percent]
         if 'sponsored' in prediction: prediction.remove('sponsored')
-        results = json.dumps({'prediction':prediction}, cls=MyEncoder)
+        results = {'prediction':prediction}
         return results
 

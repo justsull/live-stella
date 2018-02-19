@@ -45,6 +45,8 @@ class ContentApi:
 
     def flatten_strings(self, text):
         for n, t in enumerate(text):
+            if t is None:
+                del text[n]
             if type(t) is not str:
                 if type(t) is list:
                     t_len = len(t)

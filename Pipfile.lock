@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "271a5a6d7a50266d53a72452c4972b88a695e49bbd1e0d41053f486c41e72b05"
+            "sha256": "f95436203920a56f5eebc5520121f5adf86a780e6a183024b217153cb83d9688"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -109,6 +109,13 @@
                 "sha256:4aab3590e16e5f5989427e491e183397e148c1ce02d95078b60e8a60e1327bb8"
             ],
             "version": "==0.2.0"
+        },
+        "djangorestframework": {
+            "hashes": [
+                "sha256:1f6baf40ed456ed2af6bd1a4ff8bbc3503cebea16509993aea2b7085bc097766",
+                "sha256:9f9e94e8d22b100ed3a43cee8c47a7ff7b185e778a1f2da9ec5c73fc4e081b87"
+            ],
+            "version": "==3.7.7"
         },
         "docutils": {
             "hashes": [
@@ -503,6 +510,7 @@
                 "sha256:e721e53864f084f956f40f96124a74da0631ac13fbbd1ba99e8e2b5e9cafdf64",
                 "sha256:9515fe0a94e823fd90b08d22de45d7bde57c90edce705b22f5e1ecf7e1b653c8"
             ],
+            "markers": "python_version < '3'",
             "version": "==0.30.0"
         },
         "whitenoise": {
