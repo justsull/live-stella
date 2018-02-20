@@ -16,7 +16,7 @@ class CommandHandler:
 
     def form_response(self,message):
         if type(message) is str:
-            continue
+            pass
         elif type(message) is dict: 
             message = json.dumps(message)
         response = {
