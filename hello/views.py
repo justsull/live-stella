@@ -51,11 +51,13 @@ def slack_predict(request):
             message = slash_command.form_response(data) 
             return JsonResponse(message, content_type='application/json')
 
-    stell = stella()
-    data = stell.predict(text,.000001)
-    message = slash_command.form_response(data) 
+        stell = stella()
+        data = stell.predict(text,.000001)
+        message = slash_command.form_response(data) 
 
-    return JsonResponse(message, content_type='application/json')
+        return JsonResponse(message, content_type='application/json')
+    
+    return JsonResponse({'response': "Please make sure to provide an article url."}, content_type='application/json')
     
 
 def db(request):
