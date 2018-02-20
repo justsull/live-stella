@@ -5,6 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 import requests
 from .models import Greeting
 from .stella.stella import stella
+from .slack.slack_handler import CommandHandler
 from .stella.utils import MLStripper, ContentApi
 
 # Create your views here.
@@ -34,6 +35,26 @@ def predict(request):
     print("Stella")
 
     return JsonResponse(data, content_type='application/json')
+
+@csrf_exempt
+def slack_predict(request):
+    post = request.POST
+    
+    if url is not None:
+        c = ContentApi(MLStripper)
+        text = c.get_article_text(url)
+
+        if text is None: return HttpResponse("Article not yet available for auto-tagging. \nPlease make sure you have scheduled your article.", content_type='application/json')
+
+    stell = stella()
+    data = stell.predict(text,.000001)
+   
+    print("Stella")
+
+    slash_command = CommandHandler(post)
+    message = slash_command.form_response(data) 
+
+    return JsonResponse(message, content_type='application/json')
     
 
 def db(request):
