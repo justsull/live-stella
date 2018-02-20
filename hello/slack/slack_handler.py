@@ -7,6 +7,7 @@ class CommandHandler:
         self.data = data
         self.command = self.data.get('command',None)
         self.token = self.data.get('token', None)
+        self.url = self.data.get('text', None)
         self.slack_token = int(os.environ.get('VERIFICATION_TOKEN'))
 
     def validate_request(self):

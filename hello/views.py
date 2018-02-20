@@ -39,19 +39,20 @@ def predict(request):
 @csrf_exempt
 def slack_predict(request):
     post = request.POST
+    slash_command = CommandHandler(post)
+    url = slash_command.url
     
     if url is not None:
         c = ContentApi(MLStripper)
         text = c.get_article_text(url)
 
-        if text is None: return HttpResponse("Article not yet available for auto-tagging. \nPlease make sure you have scheduled your article.", content_type='application/json')
+        if text is None: 
+            data = "Article not yet available for auto-tagging. \nPlease make sure you have scheduled your article."
+            message = slash_command.form_response(data) 
+            return JsonResponse(message, content_type='application/json')
 
     stell = stella()
     data = stell.predict(text,.000001)
-   
-    print("Stella")
-
-    slash_command = CommandHandler(post)
     message = slash_command.form_response(data) 
 
     return JsonResponse(message, content_type='application/json')
