@@ -32,7 +32,7 @@ def predict(request):
     stell = stella()
     data = stell.predict(text,.000001)
    
-    print("Stella")
+    print("stella")
 
     return JsonResponse(data, content_type='application/json')
 
