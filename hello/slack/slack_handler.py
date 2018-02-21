@@ -8,13 +8,15 @@ class CommandHandler:
         self.command = self.data.get('command',None)
         self.token = self.data.get('token', None)
         self.url = self.data.get('text', None)
+        self.response_url = self.data.get('response_url', None)
         self.slack_token = os.environ.get('VERIFICATION_TOKEN')
 
     def validate_request(self):
         request = True if self.token == self.slack_token else False
         return request
 
-    def form_response(self,message):
+    @staticmethod
+    def form_response(message):
         if type(message) is str:
             pass
         elif type(message) is dict: 

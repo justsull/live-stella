@@ -7,6 +7,7 @@ from .models import Greeting
 from .stella.stella import stella
 from .slack.slack_handler import CommandHandler
 from .stella.utils import MLStripper, ContentApi
+from threading import Thread
 
 # Create your views here.
 def index(request):
@@ -30,7 +31,7 @@ def predict(request):
         if text is None: return HttpResponse("Article not yet available for auto-tagging. \nPlease make sure you have scheduled your article.", content_type='application/json')
 
     stell = stella()
-    data = stell.predict(text,.000001)
+    data = stell.predict(text,.000000001)
    
     print("stella")
 
@@ -41,23 +42,35 @@ def slack_predict(request):
     post = request.POST
     slash_command = CommandHandler(post)
     url = slash_command.url
-    
+    response_url = slash_command.response_url
+
+    thr = Thread(target=background_stella, args=[url,response_url])
+    thr.start()
+
+    message = {'text':'working on your article...'}
+
+    return JsonResponse(message, content_type='application/json')
+
+
+def background_stella(url, response_url):
     if url is not None:
         c = ContentApi(MLStripper)
         text = c.get_article_text(url)
 
         if text is None: 
             data = "Article not yet available for auto-tagging. \nPlease make sure you have scheduled your article."
-            message = slash_command.form_response(data) 
-            return JsonResponse(message, content_type='application/json')
+            message = CommandHandler.form_response(data) 
+            requests.post(response_url,data=json.dumps(message))
 
         stell = stella()
-        data = stell.predict(text,.000001)
-        message = slash_command.form_response(data) 
+        data = stell.predict(text,.000000001)
+        message = CommandHandler.form_response(data) 
 
-        return JsonResponse(message, content_type='application/json')
+        requests.post(response_url,data=json.dumps(message))
     
-    return JsonResponse({'response': "Please make sure to provide an article url."}, content_type='application/json')
+    message = {'text':'Please provide valid article url.'}
+
+    requests.post(response_url,data=json.dumps(message))
     
 
 def db(request):

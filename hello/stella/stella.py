@@ -44,7 +44,9 @@ class stella:
     def predict(self, text, percent):
         l = self.model.predict_from_text(text)
         prediction = [i[0] for i in l if  i[1] > percent]
+        # prediction = [i for i in l] use this if priting probs
         if 'sponsored' in prediction: prediction.remove('sponsored')
         results = {'prediction':prediction}
+        # results = json.dumps(results, cls=MyEncoder) use this if priting probs
         return results
 
