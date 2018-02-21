@@ -8,6 +8,7 @@ from .stella.stella import stella
 from .slack.slack_handler import CommandHandler
 from .stella.utils import MLStripper, ContentApi
 from threading import Thread
+import json
 
 # Create your views here.
 def index(request):
@@ -43,6 +44,8 @@ def slack_predict(request):
     slash_command = CommandHandler(post)
     url = slash_command.url
     response_url = slash_command.response_url
+    print("this is the url: {}".format(url))
+    print("this is the response url: {}".format(response_url))
 
     thr = Thread(target=background_stella, args=[url,response_url])
     thr.start()
@@ -53,24 +56,29 @@ def slack_predict(request):
 
 
 def background_stella(url, response_url):
+    headers = {'Content-type': 'application/json'}
+
     if url is not None:
         c = ContentApi(MLStripper)
         text = c.get_article_text(url)
+        print("this is the text from background_stella: {}".format(text))
 
         if text is None: 
             data = "Article not yet available for auto-tagging. \nPlease make sure you have scheduled your article."
             message = CommandHandler.form_response(data) 
-            requests.post(response_url,data=json.dumps(message))
+
+            requests.post(response_url,data=json.dumps(message), headers=headers)
 
         stell = stella()
         data = stell.predict(text,.000000001)
         message = CommandHandler.form_response(data) 
 
-        requests.post(response_url,data=json.dumps(message))
+        r = requests.post(response_url,data=json.dumps(message),headers=headers)
+        print("response from slack: {}\n{}".format(r.status_code,r.json()))
     
     message = {'text':'Please provide valid article url.'}
 
-    requests.post(response_url,data=json.dumps(message))
+    requests.post(response_url,data=json.dumps(message),headers=headers)
     
 
 def db(request):
