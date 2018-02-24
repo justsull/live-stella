@@ -4,6 +4,7 @@ import sys
 import json
 import numpy
 import math
+from keras import backend
 
 
 class MyEncoder(json.JSONEncoder):
@@ -28,13 +29,15 @@ class stella:
         self.word2vec_path = os.path.join(dir,'tensor/models/new_embedding')
         self.scaler_path = os.path.join(dir,'tensor/models/new_scaler')
         
+        backend.clear_session()
+        
         self.set_model()
 
     def set_model(self):
         l = set()
         with open(self.lab_path, 'r') as f_in:
             labels = list(line for line in (l.strip() for l in f_in) if line)
-        
+
         self.model = Magpie(
             keras_model=self.keras_path,
             word2vec_model=self.word2vec_path,

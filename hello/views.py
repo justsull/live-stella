@@ -74,8 +74,6 @@ def background_stella(url, response_url):
         message = CommandHandler.form_response(data) 
 
         r = requests.post(response_url,data=json.dumps(message),headers=headers)
-        rj = json.dumps(r.json())
-        print("response from slack: {}\n{}".format(r.status_code,rj))
     
     message = {'text':'Please provide valid article url.'}
 
