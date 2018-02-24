@@ -50,7 +50,9 @@ def slack_predict(request):
     thr = Thread(target=background_stella, args=[url,response_url])
     thr.start()
 
-    message = {'text':'working on your article...'}
+    string = "Analyzing your article: {}".format(url)
+
+    message = {'text': string}
 
     return JsonResponse(message, content_type='application/json')
 
@@ -75,7 +77,7 @@ def background_stella(url, response_url):
 
         r = requests.post(response_url,data=json.dumps(message),headers=headers)
     
-    message = {'text':'Please provide valid article url.'}
+    message = {'text':'Cheers! \n&#127866;'}
 
     requests.post(response_url,data=json.dumps(message),headers=headers)
 
