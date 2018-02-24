@@ -23,6 +23,6 @@ class CommandHandler:
             message = json.dumps(message)
         response = {
             "pretext": 'stella thinks the following general tags might work for your article:',
-            'color': '#36a64f',
+            "color": '#36a64f',
             "text": message}
         return response
