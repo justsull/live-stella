@@ -18,21 +18,27 @@ def index(request):
 
 @csrf_exempt
 def predict(request):
+
     if request.method == 'GET':
         url = request.GET.get('url', None)
         text = request.GET.get('text', None)
+        method = request.GET.get('method', 'stella')
     
     elif request.method == 'POST':
         url = request.POST.get('url', None)
+        method = request.POST.get('method', 'stella')
     
     if url is not None:
         c = ContentApi(MLStripper)
-        text = c.get_article_text(url)
+        _, text = c.get_article_text(url)
 
         if text is None: return HttpResponse("Article not yet available for auto-tagging. \nPlease make sure you have scheduled your article.", content_type='application/json')
-
+    
     stell = stella()
-    data = stell.predict(text,.000000001)
+    if method.lower() == 'fuzzy':
+        data = stell.fuzzy_predict(text)
+    else:
+        data = stell.predict(text,.000000001)
    
     print("stella")
 
@@ -62,10 +68,10 @@ def background_stella(url, response_url):
 
     if url is not None:
         c = ContentApi(MLStripper)
-        text = c.get_article_text(url)
+        _, text = c.get_article_text(url)
         print("this is the text from background_stella: {}".format(text))
 
-        if text is None: 
+        if text is None:
             data = "Article not yet available for auto-tagging. \nPlease make sure you have scheduled your article."
             message = CommandHandler.form_response(data) 
 

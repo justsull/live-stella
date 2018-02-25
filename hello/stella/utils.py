@@ -75,10 +75,12 @@ class ContentApi:
         return s.get_data()
 
     def cleaner(self, text):
-        text = self.flatten_strings(text)
-        text = self.strip_tags(text)
-        text = self.clean_text(text)
-        return text
+        if text is not None:
+            if type(text) is list:
+                text = self.flatten_strings(text)
+            text = self.strip_tags(text)
+            text = self.clean_text(text)
+            return text
         
     def get_article_data(self, article):
         dic = {}
@@ -110,9 +112,9 @@ class ContentApi:
         corpus_dump = []
         
         # grab first level text
-    #     title = article_data.get('title')
+        title = article_data.get('title')
     #     titles = article_data.get('title_variations')
-    #     headlines = article_data.get('headline_variations')
+        headlines = article_data.get('headline_variations')
     #     meta_description = article_data.get('meta_description')
     #     tweets = article_data.get('tweet_text_variations')
     #     is_sponsored = article_data.get('is_sponsored')
@@ -121,10 +123,10 @@ class ContentApi:
     #     celebrity_tags = article_data.get('celebrity_tags')
     #     brand_tags = article_data.get('brand_tags')
         
-    #     corpus_dump.append(title)
+        corpus_dump.append(title)
     #     corpus_dump.append(titles)
     #     corpus_dump.append(meta_description)
-    #     corpus_dump.append(headlines)
+        corpus_dump.append(headlines)
     #     corpus_dump.append(tweets)
         
         #grab widget data
@@ -165,7 +167,8 @@ class ContentApi:
                     elif w['template'] == "default":
                         g_len += 1
         dic = {}
-        dic['text']= corpus_dump
+        dic['title'] = title
+        dic['text'] = corpus_dump
         dic['w_len'] = w_len
         dic['t_len'] = t_len
         dic['p_len'] = p_len
@@ -207,7 +210,8 @@ class ContentApi:
             deep = self.go_deep_article(article_url)
             data = self.get_deep_data(deep)
             wgts = self.get_widget_data(data)
+            title = self.cleaner(wgts['title'])
             txt = self.cleaner(wgts['text'])
-            return txt
+            return title, txt
         except Exception as e: 
             print(e)

@@ -15,6 +15,7 @@ magpie = {ref = "v2.0", git = "https://github.com/inspirehep/magpie.git", editab
 tldextract = "*"
 "urllib3" = "*"
 djangorestframework = "*"
+fuzzywuzzy = "*"
 
 
 [requires]

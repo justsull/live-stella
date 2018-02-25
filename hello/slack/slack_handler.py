@@ -22,7 +22,13 @@ class CommandHandler:
         elif type(message) is dict: 
             message = json.dumps(message)
         response = {
+            "response_type": "in_channel",
             "pretext": 'stella thinks the following general tags might work for your article:',
             "color": '#36a64f',
-            "text": message}
+            "attachments": [
+                {
+                "text": message
+                }
+            ] 
+            }
         return response
