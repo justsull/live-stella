@@ -77,7 +77,7 @@ def background_stella(url, response_url):
 
         r = requests.post(response_url,data=json.dumps(message),headers=headers)
     
-    message = {'text':'Cheers! \n&#127866;'}
+    message = {'text':'Cheers! \n:beer:'}
 
     requests.post(response_url,data=json.dumps(message),headers=headers)
 

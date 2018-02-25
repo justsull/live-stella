@@ -178,8 +178,7 @@ class ContentApi:
     def checkurl(self, url):
         url = url.strip()
         www_pattern = re.compile("^(www\.)", flags=re.I)
-        if www_pattern.search(url): 
-            url = 'http://' + url
+        url = 'http://' + url if www_pattern.search(url) else url
 
         url_components = urlparse(url)
         url_parsed = tldextract.extract(url)
@@ -194,6 +193,9 @@ class ContentApi:
             raise ValueError('Only accepting WhoWhatWear articles \n Could not find www.whowhatwear.com in {}'.format(url))
         
         url_path = url_components.path
+        fs_pattern = re.compile("/$",flags=re.I)
+
+        url_path = url_path[:-1] if fs_pattern.search(url_path) else url_path
 
         url = "{subdomain}.{domain}.com{path}".format(subdomain=subdomain,domain=url_domain, path=url_path)
 
