@@ -23,10 +23,12 @@ def predict(request):
         url = request.GET.get('url', None)
         text = request.GET.get('text', None)
         method = request.GET.get('method', 'stella')
+        size = int(request.GET.get('size', 1))
     
     elif request.method == 'POST':
         url = request.POST.get('url', None)
         method = request.POST.get('method', 'stella')
+        size = int(request.POST.get('size', 1))
     
     if url is not None:
         c = ContentApi(MLStripper)
@@ -36,7 +38,7 @@ def predict(request):
     
     stell = stella()
     if method.lower() == 'fuzzy':
-        data = stell.fuzzy_predict(text)
+        data = stell.fuzzy_predict(text,size=size)
     else:
         data = stell.predict(text,.000000001)
    
