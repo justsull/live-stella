@@ -18,6 +18,7 @@ def index(request):
 
 @csrf_exempt
 def predict(request):
+    text = None
 
     if request.method == 'GET':
         url = request.GET.get('url', None)
