@@ -16,6 +16,7 @@ tldextract = "*"
 "urllib3" = "*"
 djangorestframework = "*"
 fuzzywuzzy = "*"
+python-levenshtein = "*"
 
 
 [requires]

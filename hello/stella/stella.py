@@ -28,25 +28,35 @@ class stella:
         
         dir = os.path.dirname(__file__)
         self.lab_path = os.path.join(dir,'tensor/general.labels')
+        self.brands_path = os.path.join(dir,'tensor/brands.labels')
+        self.celeb_path = os.path.join(dir,'tensor/celebs.labels')
         self.keras_path = os.path.join(dir,'tensor/models/new_models.h5')
         self.word2vec_path = os.path.join(dir,'tensor/models/new_embedding')
         self.scaler_path = os.path.join(dir,'tensor/models/new_scaler')
-        self.labels = None
+        self.gen_labels = None
+        self.brand_labels = None
+        self.celeb_labels = None
 
         backend.clear_session()
-        
+        self.set_labels()
         self.set_model()
 
-    def set_model(self):
-        # l = set()
+    def set_labels(self):
         with open(self.lab_path, 'r') as f_in:
-            self.labels = list(line for line in (l.strip() for l in f_in) if line)
+            self.gen_labels = list(line for line in (l.strip() for l in f_in) if line)
+        
+        with open(self.brands_path, 'r') as f_in:
+            self.brand_labels = list(line for line in (l.strip() for l in f_in) if line)
+        
+        with open(self.celeb_path, 'r') as f_in:
+            self.celeb_labels = list(line for line in (l.strip() for l in f_in) if line)
 
+    def set_model(self):
         self.model = Magpie(
             keras_model=self.keras_path,
             word2vec_model=self.word2vec_path,
             scaler=self.scaler_path,
-            labels = self.labels)
+            labels = self.gen_labels)
 
     def predict(self, text, percent):
         ml_pred = self.model.predict_from_text(text)
@@ -57,14 +67,32 @@ class stella:
     
     def fuzzy_predict(self,text,size=1):
         sublist = [" ".join(text.split(" ")[si:ei+1]) for si in range(len(text.split(" "))) for ei in range (si,len(text.split(" "))) if ei-si<size]
-        fuzzies = defaultdict(int)
+        gen_fuz = defaultdict(int)
+        brand_fuz = defaultdict(int)
+        celeb_fuz = defaultdict(int)
         for i in sublist:
-            fuz = process.extractOne(i, self.labels, scorer=fuzz.ratio)
-            if fuz[1]>90:
-                fuzzies[fuz[0]] += 1
-        fuzzy_pred = sorted(fuzzies.items(), key=lambda k_v: k_v[1], reverse=True)
-        prediction = [i[0] for i in fuzzy_pred]
-        results = {'prediction':prediction}
+            gfuz = process.extractOne(i, self.gen_labels, scorer=fuzz.ratio)
+            bfuz = process.extractOne(i, self.brand_labels, scorer=fuzz.ratio)
+            cfuz = process.extractOne(i, self.celeb_labels, scorer=fuzz.ratio)
+            if gfuz[1]>90: gen_fuz[gfuz[0]] += 1
+            if bfuz[1]>90: brand_fuz[bfuz[0]] += 1
+            if cfuz[1]>90: celeb_fuz[cfuz[0]] += 1
+        
+        gen_fuzzy_pred = sorted(gen_fuz.items(), key=lambda k_v: k_v[1], reverse=True)
+        gen_prediction = [i[0] for i in gen_fuzzy_pred]
+
+        brand_fuzzy_pred = sorted(brand_fuz.items(), key=lambda k_v: k_v[1], reverse=True)
+        brand_prediction = [i[0] for i in brand_fuzzy_pred]
+
+        celeb_fuzzy_pred = sorted(celeb_fuz.items(), key=lambda k_v: k_v[1], reverse=True)
+        celeb_prediction = [i[0] for i in celeb_fuzzy_pred]
+
+        results = {'predictions':{
+            'general':gen_prediction,
+            'celebrity':celeb_prediction,
+            'brand':brand_prediction
+            }}
+
         return results
 
 
