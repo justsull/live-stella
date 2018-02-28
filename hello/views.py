@@ -61,7 +61,9 @@ def slack_predict(request):
 
     string = "Analyzing your article: {}".format(url)
 
-    message = {'text': string}
+    message = {
+        "response_type": "in_channel",
+        "text": string}
 
     return JsonResponse(message, content_type='application/json')
 
@@ -86,7 +88,9 @@ def background_stella(url, response_url):
 
         r = requests.post(response_url,data=json.dumps(message),headers=headers)
     
-    message = {'text':'Cheers! \n:beer:'}
+    message = {
+        "response_type": "in_channel",
+        'text':'Cheers! \n:beer:'}
 
     requests.post(response_url,data=json.dumps(message),headers=headers)
 
