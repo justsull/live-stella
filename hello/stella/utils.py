@@ -39,6 +39,10 @@ class ContentApi:
         data = json.loads(response.text)
         return data.get('docs')
 
+    def get_next_page(self, page_num, rows=100, site_id=1):
+        next_page = '?start={start}&rows={rows}&site_id={id}'.format(start=page_num,rows=rows,id=site_id)
+        return get_article_page(param=next_page)
+
     def check_response_code(self, response):
         code = response.status_code
         return True if code == requests.codes.ok else False
@@ -93,6 +97,7 @@ class ContentApi:
             dic['tag_slugs'] = article.get('tag_slugs')
             dic['title'] = article.get('title')
             dic['headline'] = article.get('headline')
+            dic['author_names'] = article.get('author_names')
             dic['publish_start'] = article.get('publish_start')
             return dic
         except:
@@ -215,3 +220,19 @@ class ContentApi:
             return title, txt
         except Exception as e: 
             print(e)
+    
+    def give_me_data(self, article_url):
+        try:
+            article_url = self.checkurl(article_url)
+            deep = self.go_deep_article(article_url)
+            data = self.get_deep_data(deep)
+            art_data = self.get_article_data(data)
+            wgts = self.get_widget_data(data)
+            wgts['title'] = self.cleaner(wgts['title'])
+            wgts['text'] = self.cleaner(wgts['text'])
+            wgts['corpus_len'] = len(wgts['text'])
+            return {**art_data, **wgts}
+        except Exception as e: 
+            print(e)
+    
+    def pull_data_ranage(self,start_date )
