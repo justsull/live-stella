@@ -1,7 +1,7 @@
 # STELLA - a multi-label classification Slack app
 Working at a company with dozens of editors that published over 2k articles a month, a large pain point was having the editors “cleanly” and consistently tag their articles. Thus, the business intelligence team was always struggling to extract meaningful insights from our content with such poor metadata. For the past couple years I had been developing my machine learning skills, so I saw this problem as an excellent opportunity to build a solution using this technology. I decided to train my own NLP model that could accurately auto tag any article an editor wrote. I also needed a quick and easy way for editors to work with the auto tagger. Since Slack was already widely adopted at our company, I decided a Slack app would be a great platform to leverage in order to get immediate adoption and feedback. Enter Stella - a multi-label classification Slack app. Trained on over 20,000 fashion articles and 300 white listed tags, the machine achieved 90% accuracy when tested against the humans. Who knows, maybe it will write articles next.
 
-
+![](slackappdemo.gif)
 
 ## Built With
 
